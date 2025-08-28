@@ -1,74 +1,66 @@
-# TextToSQL: Natural Language to SQL for Multiple Databases
 
-TextToSQL is a Python project that enables users to ask questions in natural language and get answers from multiple SQL Server databases and schemas. It leverages LLMs (like Groq/OpenAI) and LangChain to generate, execute, and analyze SQL queries, supporting both agentic and RAG (Retrieval-Augmented Generation) workflows.
+# TextToSQL
+
+TextToSQL is a Python project that allows you to ask questions in natural language and get answers from your SQL Server database. It uses LangChain, Groq LLM, and Streamlit for a simple, interactive experience.
 
 ## Features
-- **Multi-database and multi-schema support**
-- **Agentic RAG pipeline**: Combines agent reasoning with vector database retrieval for scalable, context-aware SQL generation
-- **Cross-database querying and analysis**
-- **Schema and relationship awareness** (including foreign keys and cross-db relationships)
-- **Safe execution**: Only allows SELECT queries by default
-- **Streamlit UI and CLI support**
+
+- Natural language to SQL query generation
+- Connects to SQL Server (multiple databases supported via `.env`)
+- Only allows safe, read-only (SELECT) queries
+- Summarizes and explains query results in plain English
+- Streamlit web interface and CLI support
 
 ## Quick Start
 
-### 1. Clone the repository
-```sh
-git clone https://github.com/ZaidHani/TextToSQL.git
-cd TextToSQL
-```
+### 1. Install dependencies
 
-### 2. Install dependencies
 ```sh
 pip install -r requirements.txt
 ```
 
-### 3. Configure your environment
-Create a `.env` file (see `.env.example`) with your SQL Server and LLM API credentials. Example:
+### 2. Configure your environment
+
+Create a `.env` file with your SQL Server and LLM API credentials. Example:
+
 ```
 SQL_SERVER=your_server
-SQL_DATABASES=DB1,dbo;DB2,Fact;DB3,Posting
+SQL_DATABASE=your_database
 GROQ_API_KEY=your_groq_key
 ```
 
-### 4. Run the agent or chain
-- **Agent (multi-db, cross-db analysis):**
-	```sh
-	python text_to_sql_agent.py
-	```
-- **Chain (single-db, RAG-style):**
-	```sh
-	python text_to_sql_chain.py
-	```
-- **Streamlit app:**
+You can also specify multiple databases with:
+```
+SQL_DATABASES=DB1;DB2;DB3
+```
+
+### 3. Run the app
+
+- **Streamlit UI:**
 	```sh
 	streamlit run app.py
 	```
+- **CLI:**
+	```sh
+	python text_to_sql_chain.py
+	```
 
-## How It Works
-- **Agentic RAG:**
-	- Uses a vector database to store schema/table/relationship info (from DDL or live introspection)
-	- Agent retrieves relevant schema context and plans multi-step/cross-db queries
-- **Chain:**
-	- Retrieves relevant schema info and generates SQL for a single DB/schema
+## How it works
 
-## Schema Ingestion
-- You can ingest schema info from live DBs or from `CREATE TABLE` scripts (DDL)
-- Relationships and foreign keys are included for better cross-db reasoning
+- The app uses LangChain and Groq to convert your question into a safe SQL query.
+- It executes the query on your SQL Server database (schema is set to 'Posting' by default in the code).
+- The results are summarized and explained in plain English.
 
 ## Safety
-- By default, only `SELECT` queries are allowed (no `CREATE`, `ALTER`, `DROP`, etc.)
-- Prompts and runtime checks enforce this
+
+- Only `SELECT` queries are allowed. Any attempt to run `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `DROP`, or `ALTER` statements will be blocked.
 
 ## Customization
-- Add more databases/schemas in your `.env`
-- Extend schema ingestion to include descriptions, relationships, or sample data
-- Swap LLMs (Groq, OpenAI, Azure, etc.) as needed
 
-## License
-MIT
+- Edit `text_to_sql_chain.py` to change the default schema or add more advanced logic.
+- Add more databases in your `.env` as needed.
 
 ## Author
+
 Zaid Hani
-This project uses langchain to create an app that uses text to sql, the app will query the data from sql server database, read the results of the query and extracts valuable info about it for analysis.
 
