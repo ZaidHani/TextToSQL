@@ -4,7 +4,8 @@ import text_to_sql_chain
 st.title('Text to SQL Agent 🦜⛓️📊')
 
 st.write('''
-This app demonstrates a multi-database Text-to-SQL agent using LangChain and Groq. It can connect to multiple SQL databases/schemas, generate SQL queries from natural language questions, execute them, and summarize the results.''')
+TextToSQL lets you ask questions in natural language and get answers from your SQL Server database. Powered by LangChain and Groq, it generates safe, read-only SQL queries, executes them, and summarizes the results in plain English. Only SELECT queries are allowed for safety. Configure your connection in the .env file and start exploring your data!
+''')
 
 query = st.text_area('Enter your question:', height=150)
 
